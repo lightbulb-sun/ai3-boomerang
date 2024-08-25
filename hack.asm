@@ -20,7 +20,8 @@ banks 128
 .background "adventureisland3.nes"
 
 .equ    CUR_DIRECTION           $7b
-.equ    DIRECTION_LEFT          1
+.equ    DIRECTION_RIGHT         1
+.equ    BOOMERANG_ANGLE_LEFT    $00
 .equ    BOOMERANG_ANGLE_RIGHT   $80
 
 .bank 14 slot 1
@@ -30,12 +31,15 @@ banks 128
 .bank 16 slot 3
 .orga $fe80
 my_code:
-.check_if_facing_left
+.check_if_facing_right
         lda     CUR_DIRECTION
-        and     #DIRECTION_LEFT
-        beq     .the_end
+        and     #DIRECTION_RIGHT
+        beq     .facing_left
 .facing_right
         lda     #BOOMERANG_ANGLE_RIGHT
+        jmp     .the_end
+.facing_left
+        lda     #BOOMERANG_ANGLE_LEFT
 .the_end
         ; replace original instruction
         sta     $0692
